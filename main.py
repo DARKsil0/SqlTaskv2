@@ -18,7 +18,7 @@ def insert_data_in_db():
 if __name__ == '__main__':
     engine = set_engine()
     Base.metadata.create_all(engine)
-    insert_data_in_db()
+    # insert_data_in_db()
     session = start_session(engine)
     stmt = select(StudentModel).where(StudentModel.name == "Dmytro")
     with engine.connect() as conn:
@@ -26,9 +26,6 @@ if __name__ == '__main__':
         rows = result.fetchall()
         print(rows)
     engine.dispose()
-
-
-
 
 
 
