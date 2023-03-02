@@ -27,10 +27,8 @@ def add_randomgroups_to_db():
 def add_random_students_to_db():
     session = get_session(engine)
 
-    # Retrieve existing groups from the database
     groups = session.query(GroupModel).all()
 
-    # Assign each student to a randomly selected group
     for name, lastname in create_random_students():
         group = random.choice(groups)
         new_student = StudentModel(groups=group, name=name, last_name=lastname)
@@ -43,7 +41,7 @@ def add_courses_to_db():
     session = get_session(engine)
     for course in create_random_courses():
         new_course = CourseModel(name=course['name'], description=course['description'])
-        session.add_all([new_course])
+        session.add(new_course)
     session.commit()
 
 
@@ -77,6 +75,9 @@ if __name__ == '__main__':
     #
     # Base.metadata.create_all(engine)
     #insert_data_in_db()
+
+
+
     add_randomgroups_to_db()
     add_random_students_to_db()
     add_courses_to_db()
@@ -93,15 +94,6 @@ if __name__ == '__main__':
 
 
 
-    # with engine.connect() as conn:
-    #
-    #     conn.execute(text("CREATE USER dmytro WITH PASSWORD 'qwerty'"))
-    #     conn.execute(text("GRANT ALL PRIVILEGES ON DATABASE postgres TO dmytro"))
-    # with engine.connect() as conn:
-    #     result = conn.execute(stmt)
-    #     rows = result.fetchall()
-    #     print(rows)
-    #
 
 
 
