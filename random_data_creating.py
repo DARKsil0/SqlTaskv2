@@ -1,6 +1,7 @@
 import random
 
 
+
 def create_random_students():
     first_names = ['Emma', 'Noah', 'Olivia', 'Liam', 'Ava', 'William', 'Sophia', 'Mason', 'Isabella', 'Jacob', 'Mia',
                    'Ethan', 'Charlotte', 'Michael', 'Amelia', 'Benjamin', 'Emily', 'Daniel', 'Abigail', 'Matthew']
@@ -25,3 +26,22 @@ def create_random_group():
     return groups
 
 
+def create_random_courses():
+    courses = [
+        {'name': 'math', 'description': 'Learn the fundamentals of mathematics and problem-solving skills.'},
+        {'name': 'biology', 'description': 'Study the science of life and explore living organisms and their interactions.'},
+        {'name': 'chemistry', 'description': 'Discover the properties of matter and chemical reactions.'},
+        {'name': 'physics', 'description': 'Explore the laws that govern the universe and the behavior of matter and energy.'},
+        {'name': 'history', 'description': 'Study the past and learn about major events and their impact on society.'},
+        {'name': 'english', 'description': 'Develop language skills and critical thinking through literature and writing.'},
+        {'name': 'art', 'description': 'Express yourself through various art forms and learn about different styles and techniques.'},
+        {'name': 'music', 'description': 'Learn to appreciate music and develop skills in playing an instrument or singing.'},
+        {'name': 'computer science', 'description': 'Explore the field of computing and develop skills in programming and problem-solving.'},
+        {'name': 'physical education', 'description': 'Develop physical fitness, skills, and knowledge through various activities and sports.'},
+    ]
+    return random.sample(courses, 10)
+
+
+
+if __name__ == '__main__':
+    print(create_random_students())

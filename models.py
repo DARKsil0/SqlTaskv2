@@ -11,7 +11,6 @@ from random_data_creating import create_random_group, create_random_students
 
 
 class Base(DeclarativeBase):
-
     pass
 
 
@@ -25,16 +24,19 @@ class GroupModel(Base):
     __tablename__ = 'group'
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
+    students: Mapped["StudentModel"] = relationship("StudentModel", back_populates="groups")
 
 
 class StudentModel(Base):
     __tablename__ = 'student'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    group_id: Mapped[int]
+    group_id: Mapped[int] = mapped_column(ForeignKey("group.id"))
+    groups: Mapped["GroupModel"] = relationship("GroupModel", back_populates="students")
     name: Mapped[str]
     last_name: Mapped[str]
-    courses = relationship("CourseModel", secondary=student_course_association, back_populates="students")
+    courses: Mapped[List["CourseModel"]] = relationship("CourseModel", secondary=student_course_association, back_populates="students")
+
 
 
 class CourseModel(Base):
@@ -42,4 +44,4 @@ class CourseModel(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     description: Mapped[str]
-    students = relationship("StudentModel", secondary=student_course_association, back_populates="courses")
+    students : Mapped[List["StudentModel"]] = relationship("StudentModel", secondary=student_course_association, back_populates="courses")
