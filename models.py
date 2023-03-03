@@ -24,15 +24,14 @@ class GroupModel(Base):
     __tablename__ = 'group'
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    students: Mapped["StudentModel"] = relationship("StudentModel", back_populates="groups")
-
+    students: Mapped[List["StudentModel"]] = relationship("StudentModel", back_populates="group")
 
 class StudentModel(Base):
     __tablename__ = 'student'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    group_id: Mapped[int] = mapped_column(ForeignKey("group.id"))
-    groups: Mapped["GroupModel"] = relationship("GroupModel", back_populates="students")
+    group_id: Mapped[Optional[int]] = mapped_column(ForeignKey("group.id"))
+    group: Mapped[Optional["GroupModel"]] = relationship("GroupModel", back_populates="students")
     name: Mapped[str]
     last_name: Mapped[str]
     courses: Mapped[List["CourseModel"]] = relationship("CourseModel", secondary=student_course_association, back_populates="students")

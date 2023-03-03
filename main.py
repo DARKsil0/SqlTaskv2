@@ -20,8 +20,9 @@ def add_randomgroups_to_db():
     session = get_session(engine)
     for group in create_random_group():
         new_group = GroupModel(name=group)
-        session.add_all([new_group])
+        session.add(new_group)
     session.commit()
+
 
 
 def add_random_students_to_db():
@@ -31,10 +32,12 @@ def add_random_students_to_db():
 
     for name, lastname in create_random_students():
         group = random.choice(groups)
-        new_student = StudentModel(groups=group, name=name, last_name=lastname)
+        new_student = StudentModel(group=group, group_id=group.id, name=name, last_name=lastname)
         session.add(new_student)
 
     session.commit()
+
+
 
 
 def add_courses_to_db():
@@ -83,13 +86,19 @@ if __name__ == '__main__':
     add_courses_to_db()
     assign_students_to_courses()
     session = get_session(engine)
-    students_with_groups = session.query(StudentModel, GroupModel) \
-        .join(GroupModel, StudentModel.group_id == GroupModel.id) \
-        .all()
-    for student, group in students_with_groups:
-        print(f"{student.name} {student.last_name} is in group {group.name}")
-    print(get_courses_with_students())
+    student = session.query(StudentModel).filter_by(id=33).first()
 
+
+    # students_with_groups = session.query(StudentModel, GroupModel) \
+    #     .join(GroupModel, StudentModel.group_id == GroupModel.id) \
+    #     .all()
+    # for student, group in students_with_groups:
+    #     print(f"{student.name} {student.last_name} is in group {group.name}", student.id, student.group_id)
+    #
+    # for list in get_courses_with_students():
+    #     if 'history' in list:
+    #         print(1)
+    session.commit()
 
 
 
