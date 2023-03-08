@@ -1,10 +1,11 @@
 import random
 from sqlalchemy import select, MetaData, Table
 from sqlalchemy.sql import text
-
+import os
 from models import CourseModel, StudentModel, GroupModel, Base, student_course_association
 from service import set_engine, get_session
 from random_data_creating import create_random_group, create_random_students, create_random_courses
+from cli import cli
 
 
 def insert_data_in_db():
@@ -24,7 +25,6 @@ def add_randomgroups_to_db():
     session.commit()
 
 
-
 def add_random_students_to_db():
     session = get_session(engine)
 
@@ -36,8 +36,6 @@ def add_random_students_to_db():
         session.add(new_student)
 
     session.commit()
-
-
 
 
 def add_courses_to_db():
@@ -70,35 +68,79 @@ def get_courses_with_students():
     return course_student_list
 
 
+def main():
+    session = get_session(engine)
+    if os.environ.get("TERM") is not None:
+        args = cli()
+        if args.random:
+            add_randomgroups_to_db()
+            add_random_students_to_db()
+            add_courses_to_db()
+            assign_students_to_courses()
+        if args.find:
+            if args.find == 'student':
+                if args.id:
+                    student = session.query(StudentModel).filter_by(id=args.id).first()
+                    print(student.name, student.id, student.group)
+                    return student
+                elif args.name:
+                    student = session.query(StudentModel).filter_by(name=args.name).first()
+                    print(student.name, student.id, student.group)
+                    return student
+
+            elif args.find == 'group':
+                if args.id:
+                    group = session.query(GroupModel).filter_by(id=args.id).first()
+                    print(group.name, group.id)
+                    return group
+                elif args.name:
+                    group = session.query(GroupModel).filter_by(name=args.name).first()
+                    print(group.name, group.id)
+                    return group
+
+            if args.find == 'course':
+                if args.id:
+                    course = session.query(CourseModel).filter_by(id=args.id).first()
+                    print(course.name, course.id, course.description)
+                    return course
+                elif args.name:
+                    course  = session.query(CourseModel).filter_by(name=args.name).first()
+                    print(course.name, course.id, course.description)
+                    return course
+
+        elif args.delete:
+            if args.delete == 'student':
+                if args.id:
+                    record = session.query(StudentModel).get(args.id)
+                    session.delete(record)
+
+                elif args.name:
+                    record = session.query(StudentModel).get(args.name)
+                    session.delete(record)
+            elif args.delete == 'group':
+                if args.id:
+                    record = session.query(GroupModel).get(args.id)
+                    session.delete(record)
+                elif args.name:
+                    record = session.query(GroupModel).get(args.name)
+                    session.delete(record)
+            if args.delete == 'course':
+                if args.id:
+                    record = session.query(CourseModel).get(args.id)
+                    session.delete(record)
+                elif args.name:
+                    record = session.query(CourseModel).get(args.name)
+                    session.delete(record)
+        session.commit()
+    else:
+        print('Functionality is developing')
+
+
 if __name__ == '__main__':
     engine = set_engine()
     Base.metadata.create_all(engine)
-    # GroupModel.__table__.drop(engine)
-    # StudentModel.__table__.drop(engine)
-    #
-    # Base.metadata.create_all(engine)
-    #insert_data_in_db()
+    main()
 
-
-
-    add_randomgroups_to_db()
-    add_random_students_to_db()
-    add_courses_to_db()
-    assign_students_to_courses()
-    session = get_session(engine)
-    student = session.query(StudentModel).filter_by(id=33).first()
-
-
-    # students_with_groups = session.query(StudentModel, GroupModel) \
-    #     .join(GroupModel, StudentModel.group_id == GroupModel.id) \
-    #     .all()
-    # for student, group in students_with_groups:
-    #     print(f"{student.name} {student.last_name} is in group {group.name}", student.id, student.group_id)
-    #
-    # for list in get_courses_with_students():
-    #     if 'history' in list:
-    #         print(1)
-    session.commit()
 
 
 
