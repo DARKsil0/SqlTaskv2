@@ -44,4 +44,4 @@ def create_random_courses():
 
 
 if __name__ == '__main__':
-    print(create_random_students())
+    print(create_random_courses())
