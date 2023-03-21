@@ -88,6 +88,8 @@ def main():
                     student = session.query(StudentModel).filter_by(name=args.name).first()
                     print(student.name, student.id, student.group)
                     return student
+                else:
+                    print('We need name or id to find student')
 
             elif args.find == 'group':
                 if args.id:
@@ -98,6 +100,8 @@ def main():
                     group = session.query(GroupModel).filter_by(name=args.name).first()
                     print(group.name, group.id)
                     return group
+                else:
+                    print('We need name or id to find group')
 
             if args.find == 'course':
                 if args.id:
@@ -108,6 +112,8 @@ def main():
                     course  = session.query(CourseModel).filter_by(name=args.name).first()
                     print(course.name, course.id, course.description)
                     return course
+                else:
+                    print('We need name or id to find course')
 
         elif args.delete:
             if args.delete == 'student':
@@ -118,6 +124,8 @@ def main():
                 elif args.name:
                     record = session.query(StudentModel).get(args.name)
                     session.delete(record)
+                else:
+                    print('We need name or id to delete student')
             elif args.delete == 'group':
                 if args.id:
                     record = session.query(GroupModel).get(args.id)
@@ -125,6 +133,8 @@ def main():
                 elif args.name:
                     record = session.query(GroupModel).get(args.name)
                     session.delete(record)
+                else:
+                    print('We need name or id to delete group')
             if args.delete == 'course':
                 if args.id:
                     record = session.query(CourseModel).get(args.id)
@@ -132,6 +142,8 @@ def main():
                 elif args.name:
                     record = session.query(CourseModel).get(args.name)
                     session.delete(record)
+                else:
+                    print('We need name or id to delete course')
         session.commit()
     else:
         print('Functionality is developing')
