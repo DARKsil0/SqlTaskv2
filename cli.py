@@ -16,8 +16,8 @@ def cli():
     find_delete_group.add_argument('--delete', choices=['student', 'group', 'course'],
                                    help='Delete an item from the database')
 
-    id_name_group.add_argument('--name', help='Name of the item to find or delete')
-    id_name_group.add_argument('--id', type=int, help='ID of the item to find or delete')
+    id_name_group.add_argument('--name', help='Name of the item to find or delete', required=False)
+    id_name_group.add_argument('--id', type=int, help='ID of the item to find or delete', required=False)
 
     parser.add_argument('--random', help='Generete random data and adds it to database')
 
