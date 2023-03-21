@@ -6,7 +6,7 @@ from models import CourseModel, StudentModel, GroupModel, Base, student_course_a
 from service import set_engine, get_session
 from random_data_creating import create_random_group, create_random_students, create_random_courses
 from cli import cli
-from queries import get_groups_with_less_or_equal_student_count
+from queries import get_groups_with_less_or_equal_student_count, add_student_to_course, remove_student_from_course
 
 
 def insert_data_in_db():
@@ -142,22 +142,7 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     main()
     session = get_session(engine)
-    groups = get_groups_with_less_or_equal_student_count(30, session)
 
-    # Print the group IDs and the number of students in each group
-    for group in groups:
-        print(f"Group ID: {group.id}, Number of students: {len(group.students)}")
-
-
-
-    group = session.query(GroupModel).filter_by(id=5).one()
-    result = session.query(CourseModel).group_by(CourseModel.id).where(CourseModel.name == 'math').all()
-    print(result[0].students[0].name)
-
-    # Get the number of students in the group
-    num_students = len(group.students)
-
-    print(num_students)
 
     engine.dispose()
 
