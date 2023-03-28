@@ -6,7 +6,7 @@ from sqlalchemy.sql import text
 
 @lru_cache()
 def set_engine():
-    engine = create_engine('postgresql://dmytro:qwerty@localhost:5432/postgres', )
+    engine = create_engine('postgresql://dmytro:qwerty@localhost:5432/postgres')
 
     return engine
 

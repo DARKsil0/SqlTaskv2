@@ -1,7 +1,6 @@
 import random
 
 
-
 def create_random_students():
     first_names = ['Emma', 'Noah', 'Olivia', 'Liam', 'Ava', 'William', 'Sophia', 'Mason', 'Isabella', 'Jacob', 'Mia',
                    'Ethan', 'Charlotte', 'Michael', 'Amelia', 'Benjamin', 'Emily', 'Daniel', 'Abigail', 'Matthew']
@@ -45,3 +44,4 @@ def create_random_courses():
 
 if __name__ == '__main__':
     print(create_random_courses())
+

@@ -1,13 +1,12 @@
 from typing import List
 from typing import Optional
 from sqlalchemy import ForeignKey
-from sqlalchemy import String, create_engine, select, Integer, Table, Column
-from sqlalchemy.orm import DeclarativeBase, Session
+from sqlalchemy import String, Integer, Table, Column
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
-import random
-from random_data_creating import create_random_group, create_random_students
+
 
 
 class Base(DeclarativeBase):
@@ -26,6 +25,7 @@ class GroupModel(Base):
     name: Mapped[str] = mapped_column(String(30))
     students: Mapped[List["StudentModel"]] = relationship("StudentModel", back_populates="group")
 
+
 class StudentModel(Base):
     __tablename__ = 'student'
 
@@ -35,7 +35,6 @@ class StudentModel(Base):
     name: Mapped[str]
     last_name: Mapped[str]
     courses: Mapped[List["CourseModel"]] = relationship("CourseModel", secondary=student_course_association, back_populates="students")
-
 
 
 class CourseModel(Base):

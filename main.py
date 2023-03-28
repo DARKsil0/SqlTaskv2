@@ -6,7 +6,9 @@ from models import CourseModel, StudentModel, GroupModel, Base, student_course_a
 from service import set_engine, get_session
 from random_data_creating import create_random_group, create_random_students, create_random_courses
 from cli import cli
-from queries import get_groups_with_less_or_equal_student_count, add_student_to_course, remove_student_from_course
+from queries import get_groups_with_less_or_equal_student_count, add_student_to_course, remove_student_from_course, delete_student_by_id
+
+
 
 
 def insert_data_in_db():
@@ -71,6 +73,7 @@ def get_courses_with_students():
 
 def main():
     session = get_session(engine)
+
     if os.environ.get("TERM") is not None:
         args = cli()
         if args.random:
@@ -109,7 +112,7 @@ def main():
                     print(course.name, course.id, course.description)
                     return course
                 elif args.name:
-                    course  = session.query(CourseModel).filter_by(name=args.name).first()
+                    course = session.query(CourseModel).filter_by(name=args.name).first()
                     print(course.name, course.id, course.description)
                     return course
                 else:
@@ -135,7 +138,7 @@ def main():
                     session.delete(record)
                 else:
                     print('We need name or id to delete group')
-            if args.delete == 'course':
+            elif args.delete == 'course':
                 if args.id:
                     record = session.query(CourseModel).get(args.id)
                     session.delete(record)
@@ -144,9 +147,19 @@ def main():
                     session.delete(record)
                 else:
                     print('We need name or id to delete course')
+        elif args.run:
+            from app import app
+            app = app
+            app.run()
+            print('App is running')
+
         session.commit()
+
     else:
-        print('Functionality is developing')
+        from app import app
+        app = app
+        app.run()
+        print('App is running')
 
 
 if __name__ == '__main__':
@@ -154,7 +167,6 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     main()
     session = get_session(engine)
-
 
     engine.dispose()
 
